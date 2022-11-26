@@ -16,8 +16,8 @@ git branch: 'development', credentialsId: '93829464-9104-4339-9d94-bd5e2f54222f'
 
 stage('build'){
 sh "${mavenhome}/bin/mvn clean package"
-}
-/* 
+} 
+
  stage('report'){
 sh "${mavenhome}/bin/mvn clean sonar:sonar"
  }   
@@ -32,7 +32,6 @@ sh "scp -o strictHostkeyChecking=no target/maven-web-application.war ec2-user@17
 }
 }
 
-*/
 }//trycloseing
 catch (e){
 currentBuild.result = "FAILURE"
