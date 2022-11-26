@@ -1,0 +1,31 @@
+node{
+    
+def mavenhome = tool name: ('maven3.8.6')
+ 
+echo "the job name is: ${env.JOB_NAME}"
+echo "the build number is: ${env.BUILD_NUMBER}"
+
+stage('gitcode'){
+git branch: 'development', credentialsId: '93829464-9104-4339-9d94-bd5e2f54222f', url: 'https://github.com/sateesh334/maven-web-application.git'
+} 
+
+stage('build'){
+sh "${mavenhome}/bin/mvn clean package"
+}
+ 
+ stage('report'){
+sh "${mavenhome}/bin/mvn clean sonar:sonar"
+ }   
+
+stage('artifacts'){
+sh "${mavenhome}/bin/mvn deploy"
+}
+    
+stage('application depoly'){
+sshagent(['e63eb095-a050-4cef-a7be-2107c4af60bb']) {
+sh "scp -o strictHostkeyChecking=no target/maven-web-application.war ec2-user@172.31.9.205:/opt/apache-tomcat/webapps/"
+
+}
+}
+    
+}//nodecloseing
