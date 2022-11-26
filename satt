@@ -16,7 +16,7 @@ git branch: 'development', credentialsId: '93829464-9104-4339-9d94-bd5e2f54222f'
 stage('build'){
 sh "${mavenhome}/bin/mvn clean package"
 }
- 
+/* 
  stage('report'){
 sh "${mavenhome}/bin/mvn clean sonar:sonar"
  }   
@@ -31,17 +31,18 @@ sh "scp -o strictHostkeyChecking=no target/maven-web-application.war ec2-user@17
 }
 }
 
+*/
 }//trycloseing
 catch (e){
 currentBuild.result = "FAILURE"
 } 
 finally{
-slack notifications(currentBuild.result)
+sendSlackNotifications(currentBuild.result)
 } 
 
 }//nodecloseing
 
-def slacknotifications(String buildStatus = 'STARTED') {
+def sendSlackNotifications(String buildStatus = 'STARTED') {
   // build status of null means successful
   buildStatus =  buildStatus ?: 'SUCCESS'
 
@@ -53,13 +54,13 @@ def slacknotifications(String buildStatus = 'STARTED') {
 
   // Override default values based on build status
   if (buildStatus == 'STARTED') {
-    color = 'PURPLE'
+    colorName = 'PURPLE'
     colorCode = '#A020F0'
   } else if (buildStatus == 'SUCCESS') {
-    color = 'GREEN'
+    colorName = 'GREEN'
     colorCode = '#00FF00'
   } else {
-    color = 'RED'
+    colorName = 'RED'
     colorCode = '#FF0000'
   }
 
