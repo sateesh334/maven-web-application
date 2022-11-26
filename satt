@@ -38,7 +38,8 @@ currentBuild.result = "FAILURE"
 } 
 finally{
 slack notifications(currentBuild.result)
-}  
+} 
+
 }//nodecloseing
 
 def slacknotifications(String buildStatus = 'STARTED') {
