@@ -31,14 +31,14 @@ sh "scp -o strictHostkeyChecking=no target/maven-web-application.war ec2-user@17
 
 }
 }
+
 }//trycloseing
 catch (e){
 currentBuild.result = "FAILURE"
 } 
 finally{
 slack notifications(currentBuild.result)
-}
-    
+}  
 }//nodecloseing
 
 def slacknotifications(String buildStatus = 'STARTED') {
